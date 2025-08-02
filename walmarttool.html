@@ -1,0 +1,571 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.5">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Walmart Product Research Tool&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>* { box-sizing: border-box; margin: 0; padding: 0; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #f9fafb;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1.6;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.container { max-width: 1200px; margin: 0 auto; padding: 24px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 32px; padding: 24px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.header { text-align: center; margin-bottom: 32px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.title { font-size: 2rem; font-weight: bold; color: #1f2937; margin-bottom: 8px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.subtitle { color: #6b7280; margin-bottom: 8px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.features { color: #2563eb; font-size: 0.875rem; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.section-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.grid { display: grid; gap: 16px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.grid-4 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.grid-3 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.grid-2 { grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; display: flex; align-items: center; justify-content: center; transition: all 0.2s; text-decoration: none; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn-primary { background: #2563eb; color: white; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn-primary:hover { background: #1d4ed8; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn-green { background: #059669; color: white; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn-green:hover { background: #047857; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn-red { background: #dc2626; color: white; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn-red:hover { background: #b91c1c; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn-purple { background: #7c3aed; color: white; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn-purple:hover { background: #6d28d9; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn-sm { padding: 4px 8px; font-size: 0.75rem; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.input { width: 100%; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.select { width: 100%; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.label { display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 4px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.table th, .table td { padding: 8px; text-align: left; border-bottom: 1px solid #e5e7eb; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.table th { font-weight: 600; color: #374151; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.table tr:hover { background: #f9fafb; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.text-green { color: #059669; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.text-red { color: #dc2626; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.text-yellow { color: #d97706; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.text-blue { color: #2563eb; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.text-gray { color: #6b7280; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.text-sm { font-size: 0.875rem; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.text-xs { font-size: 0.75rem; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.font-medium { font-weight: 500; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.font-bold { font-weight: 700; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.bg-blue { background: #dbeafe; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.bg-green { background: #d1fae5; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.bg-purple { background: #e9d5ff; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.bg-orange { background: #fed7aa; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.bg-gray { background: #f3f4f6; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.metric-card { padding: 16px; border-radius: 8px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.metric-title { font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.metric-value { font-size: 1.5rem; font-weight: bold; margin-bottom: 4px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.metric-subtitle { font-size: 0.75rem; color: #6b7280; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.progress-bar { width: 100%; height: 12px; background: #e5e7eb; border-radius: 6px; overflow: hidden; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.progress-fill { height: 100%; border-radius: 6px; transition: width 0.3s; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.progress-green { background: #10b981; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.progress-yellow { background: #f59e0b; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.progress-red { background: #ef4444; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.hidden { display: none; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.flex { display: flex; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.items-center { align-items: center; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.justify-between { justify-content: space-between; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.space-x-2 &gt; * + * { margin-left: 8px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.space-y-1 &gt; * + * { margin-top: 4px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.space-y-2 &gt; * + * { margin-top: 8px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.mb-1 { margin-bottom: 4px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.mb-2 { margin-bottom: 8px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.mb-3 { margin-bottom: 12px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.mb-4 { margin-bottom: 16px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.mt-2 { margin-top: 8px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.mt-3 { margin-top: 12px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.mr-2 { margin-right: 8px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.border-t { border-top: 1px solid #e5e7eb; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.pt-2 { padding-top: 8px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.icon { margin-right: 8px; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Header --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1 class="title"&gt;🛒 Walmart Product Research Tool&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="subtitle"&gt;Analyze profit potential and competition for Walmart Marketplace&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="features"&gt;✓ Walmart-specific fees ✓ Competition analysis ✓ Data export/import ✓ Private &amp; Secure&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Data Management --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="section-title"&gt;💾 Data Management&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grid grid-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="exportToCSV()" class="btn btn-green"&gt;📊 Export CSV&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="exportToJSON()" class="btn btn-primary"&gt;💾 Backup Data&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;label class="btn btn-purple" style="cursor: pointer;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>📁 Import Data</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="file" accept=".json" onchange="importFromJSON(event)" class="hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="clearAllData()" class="btn btn-red"&gt;🗑️ Clear All&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="mt-3 text-sm text-gray"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p&gt;💾 Your data is automatically saved to your browser&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p&gt;📊 Export to CSV for Excel analysis • 🔄 Backup/restore with JSON files&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Add Product Form --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="section-title"&gt;➕ Add New Walmart Product&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;form onsubmit="addProduct(event)"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="grid grid-4 mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div style="grid-column: span 2;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;label class="label"&gt;Product Name&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;input type="text" id="productName" class="input" placeholder="Enter product name" required&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;label class="label"&gt;Walmart Selling Price ($)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;input type="number" id="sellingPrice" class="input" step="0.01" placeholder="0.00" required&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;label class="label"&gt;Your Cost Price ($)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;input type="number" id="costPrice" class="input" step="0.01" placeholder="0.00" required&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;label class="label"&gt;Shipping Weight (lbs)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;input type="number" id="shippingWeight" class="input" step="0.1" value="1" min="0.1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;label class="label"&gt;Category&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;select id="category" class="select"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;option value="electronics"&gt;Electronics&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;option value="beauty"&gt;Beauty&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;option value="pets"&gt;Pets&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;option value="home"&gt;Home&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;option value="clothing"&gt;Clothing&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;option value="toys"&gt;Toys&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;option value="sports"&gt;Sports&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;option value="books"&gt;Books&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;option value="automotive"&gt;Automotive&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;option value="health"&gt;Health&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;option value="baby"&gt;Baby&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;option value="grocery"&gt;Grocery&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;option value="jewelry"&gt;Jewelry&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;option value="office"&gt;Office&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;label class="label"&gt;Fulfillment&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;select id="sellerType" class="select"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;option value="marketplace"&gt;Self-Fulfilled&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;option value="wfs"&gt;Walmart Fulfillment (WFS)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;label class="label"&gt;Competitors&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;input type="number" id="competitors" class="input" placeholder="0" min="0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;label class="label"&gt;Est. Monthly Sales&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;input type="number" id="estimatedSales" class="input" placeholder="0" min="0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;label class="label"&gt;Walmart Best Seller Rank (optional)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="number" id="walmartRank" class="input" style="width: 25%;" placeholder="e.g., 15000" min="1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="text-xs text-gray mt-1"&gt;Lower numbers = better ranking (1 = #1 bestseller)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button type="submit" class="btn btn-primary"&gt;➕ Add to Analysis&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/form&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Products List --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="section-title"&gt;📋 Your Walmart Products (&lt;span id="productCount"&gt;0&lt;/span&gt;)&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="productsList"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p class="text-gray" style="text-align: center; padding: 32px;"&gt;No products added yet. Add your first Walmart product above!&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Analysis Section --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="analysisSection" class="card hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="section-title"&gt;📦 &lt;span id="analysisTitle"&gt;Product Analysis&lt;/span&gt;&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="analysisContent"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Global variables</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let products = [];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let currentAnalysis = null;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Load data from localStorage</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function loadData() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const savedProducts = localStorage.getItem('walmartProducts');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (savedProducts) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>products = JSON.parse(savedProducts);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>updateProductsList();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (e) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('Error loading saved products:', e);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Save data to localStorage</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function saveData() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>localStorage.setItem('walmartProducts', JSON.stringify(products));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (e) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('Error saving products:', e);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Calculate Walmart fees</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function calculateWalmartFees(sellingPrice, category, weight, sellerType) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const price = parseFloat(sellingPrice) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const shippingWeight = parseFloat(weight) || 1;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const referralFees = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'electronics': 8.0, 'beauty': 8.0, 'pets': 8.0, 'home': 15.0,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'clothing': 16.0, 'toys': 8.0, 'sports': 8.0, 'books': 15.0,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'automotive': 12.0, 'health': 8.0, 'baby': 8.0, 'grocery': 8.0,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'jewelry': 20.0, 'office': 15.0</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const referralFeeRate = referralFees[category] || 15.0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const referralFee = (price * referralFeeRate) / 100;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let fulfillmentFee = 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (sellerType === 'wfs') {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (shippingWeight &lt;= 1) fulfillmentFee = 3.26;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>else if (shippingWeight &lt;= 2) fulfillmentFee = 4.75;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>else if (shippingWeight &lt;= 3) fulfillmentFee = 5.40;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>else if (shippingWeight &lt;= 5) fulfillmentFee = 6.75;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>else fulfillmentFee = 6.75 + (shippingWeight - 5) * 0.85;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const paymentFee = (price * 0.029) + 0.30;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>return {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>referralFee, fulfillmentFee, paymentFee,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>totalFees: referralFee + fulfillmentFee + paymentFee</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Calculate profit metrics</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function calculateProfitMetrics(product) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const selling = parseFloat(product.sellingPrice) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const cost = parseFloat(product.costPrice) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const competitors = parseInt(product.competitors) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const sales = parseInt(product.estimatedSales) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const rank = parseInt(product.walmartRank) || 999999;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const fees = calculateWalmartFees(selling, product.category, product.shippingWeight, product.sellerType);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const totalCosts = cost + fees.totalFees;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const profit = selling - totalCosts;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const profitMargin = selling &gt; 0 ? (profit / selling) * 100 : 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const roi = cost &gt; 0 ? (profit / cost) * 100 : 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const estimatedMonthlyProfit = profit * sales;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let competitionLevel = 'Low';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let competitionColor = 'text-green';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (competitors &gt; 50) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>competitionLevel = 'High';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>competitionColor = 'text-red';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (competitors &gt; 20) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>competitionLevel = 'Medium';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>competitionColor = 'text-yellow';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let profitabilityScore = 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (profitMargin &gt; 0) profitabilityScore += 10;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (profitMargin &gt; 15) profitabilityScore += 10;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (profitMargin &gt; 25) profitabilityScore += 10;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (profitMargin &gt; 35) profitabilityScore += 10;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (roi &gt; 50) profitabilityScore += 10;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (roi &gt; 100) profitabilityScore += 10;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (competitors &lt; 10) profitabilityScore += 20;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>else if (competitors &lt; 25) profitabilityScore += 15;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>else if (competitors &lt; 50) profitabilityScore += 10;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (sales &gt; 5) profitabilityScore += 5;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (sales &gt; 20) profitabilityScore += 5;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let recommendation = 'Not Recommended';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let recommendationColor = 'text-red';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let recommendationIcon = '❌';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (profitabilityScore &gt;= 75) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>recommendation = 'Highly Recommended';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>recommendationColor = 'text-green';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>recommendationIcon = '✅';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (profitabilityScore &gt;= 55) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>recommendation = 'Worth Considering';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>recommendationColor = 'text-yellow';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>recommendationIcon = '⚠️';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>return {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>profit, profitMargin, roi, estimatedMonthlyProfit,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>competitionLevel, competitionColor, profitabilityScore,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>recommendation, recommendationColor, recommendationIcon, fees</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Add product</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function addProduct(event) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>event.preventDefault();</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const product = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>id: Date.now(),</p>
+<p class="p1"><span class="Apple-converted-space">                </span>name: document.getElementById('productName').value,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>sellingPrice: document.getElementById('sellingPrice').value,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>costPrice: document.getElementById('costPrice').value,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>shippingWeight: document.getElementById('shippingWeight').value,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>category: document.getElementById('category').value,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>sellerType: document.getElementById('sellerType').value,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>competitors: document.getElementById('competitors').value,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>estimatedSales: document.getElementById('estimatedSales').value,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>walmartRank: document.getElementById('walmartRank').value,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>addedAt: new Date().toLocaleDateString()</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>products.push(product);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>saveData();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>updateProductsList();</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Clear form</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.querySelector('form').reset();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('shippingWeight').value = '1';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Remove product</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function removeProduct(id) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (confirm('Are you sure you want to remove this product?')) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>products = products.filter(p =&gt; p.id !== id);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>saveData();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>updateProductsList();</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Hide analysis if current product was deleted</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (currentAnalysis &amp;&amp; currentAnalysis.product.id === id) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('analysisSection').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>currentAnalysis = null;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Analyze product</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function analyzeProduct(id) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const product = products.find(p =&gt; p.id === id);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!product) return;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const metrics = calculateProfitMetrics(product);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>currentAnalysis = { product, metrics };</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('analysisTitle').textContent = `Walmart Analysis: ${product.name}`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('analysisContent').innerHTML = generateAnalysisHTML(product, metrics);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('analysisSection').classList.remove('hidden');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Scroll to analysis</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('analysisSection').scrollIntoView({ behavior: 'smooth' });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Generate analysis HTML</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function generateAnalysisHTML(product, metrics) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>return `</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="grid grid-4 mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="metric-card bg-blue"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="metric-title"&gt;💰 Net Profit per Sale&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="metric-value text-blue"&gt;$${metrics.profit.toFixed(2)}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="metric-subtitle"&gt;After all Walmart fees&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="metric-card bg-green"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="metric-title"&gt;📈 Profit Margin&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="metric-value text-green"&gt;${metrics.profitMargin.toFixed(1)}%&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="metric-subtitle"&gt;Industry avg: 15-25%&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="metric-card bg-purple"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="metric-title"&gt;🧮 ROI&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="metric-value text-blue"&gt;${metrics.roi.toFixed(1)}%&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="metric-subtitle"&gt;Return on investment&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="metric-card bg-orange"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="metric-title"&gt;👥 Competition&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="metric-value ${metrics.competitionColor}"&gt;${metrics.competitionLevel}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="metric-subtitle"&gt;${product.competitors || 0} sellers&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="grid grid-3 mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="metric-card bg-gray"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="font-medium mb-3"&gt;Walmart Fee Breakdown&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="space-y-2 text-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="flex justify-between"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;Referral Fee:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;$${metrics.fees.referralFee.toFixed(2)}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="flex justify-between"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;Payment Processing:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;$${metrics.fees.paymentFee.toFixed(2)}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>${product.sellerType === 'wfs' ? `</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="flex justify-between"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;WFS Fulfillment:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;$${metrics.fees.fulfillmentFee.toFixed(2)}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;` : ''}</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="flex justify-between font-medium border-t pt-2 text-red"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;Total Walmart Fees:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;$${metrics.fees.totalFees.toFixed(2)}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="metric-card bg-gray"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="font-medium mb-3"&gt;Cost Structure&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="space-y-2 text-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="flex justify-between"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;Product Cost:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;$${parseFloat(product.costPrice || 0).toFixed(2)}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="flex justify-between"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;Walmart Fees:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;$${metrics.fees.totalFees.toFixed(2)}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="flex justify-between font-medium border-t pt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;Total Costs:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;$${(parseFloat(product.costPrice || 0) + metrics.fees.totalFees).toFixed(2)}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="flex justify-between font-medium text-green"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;Net Profit:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;$${metrics.profit.toFixed(2)}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="metric-card bg-gray"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h3 class="font-medium mb-3"&gt;Performance Metrics&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="space-y-2 text-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="flex justify-between"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;Est. Monthly Sales:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;${product.estimatedSales || 0} units&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="flex justify-between"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;Monthly Revenue:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;$${((parseFloat(product.sellingPrice || 0)) * (parseInt(product.estimatedSales || 0))).toFixed(2)}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="flex justify-between font-medium border-t pt-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span&gt;Monthly Profit:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span class="${metrics.estimatedMonthlyProfit &gt;= 0 ? 'text-green' : 'text-red'}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>$${metrics.estimatedMonthlyProfit.toFixed(2)}</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="metric-card bg-gray"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="flex justify-between items-center mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h3 class="font-medium mb-1"&gt;Walmart Selling Recommendation&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="flex items-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span class="mr-2"&gt;${metrics.recommendationIcon}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;span class="font-medium ${metrics.recommendationColor}"&gt;${metrics.recommendation}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div style="text-align: right;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div class="text-sm text-gray"&gt;Profitability Score&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div style="font-size: 1.5rem; font-weight: bold;"&gt;${metrics.profitabilityScore}/100&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="progress-bar mb-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div class="progress-fill ${</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>metrics.profitabilityScore &gt;= 75 ? 'progress-green' :<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                            </span>metrics.profitabilityScore &gt;= 55 ? 'progress-yellow' : 'progress-red'</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}" style="width: ${metrics.profitabilityScore}%"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="grid grid-2 text-sm text-gray"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h4 class="font-medium mb-2 text-green"&gt;Strengths:&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;ul class="space-y-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>${metrics.profitMargin &gt; 25 ? `&lt;li&gt;✅ Strong profit margin (${metrics.profitMargin.toFixed(1)}%)&lt;/li&gt;` : ''}</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>${metrics.roi &gt; 100 ? `&lt;li&gt;✅ Excellent ROI (${metrics.roi.toFixed(1)}%)&lt;/li&gt;` : ''}</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>${(product.competitors || 0) &lt; 20 ? '&lt;li&gt;✅ Low competition niche&lt;/li&gt;' : ''}</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>${metrics.estimatedMonthlyProfit &gt; 500 ? '&lt;li&gt;✅ Good revenue potential&lt;/li&gt;' : ''}</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">                        </span></p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;h4 class="font-medium mb-2 text-red"&gt;Areas of Concern:&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;ul class="space-y-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>${metrics.profitMargin &lt;= 15 ? `&lt;li&gt;⚠️ Low profit margin (${metrics.profitMargin.toFixed(1)}%)&lt;/li&gt;` : ''}</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>${metrics.fees.totalFees &gt; (parseFloat(product.sellingPrice) * 0.3) ? '&lt;li&gt;⚠️ High Walmart fees relative to price&lt;/li&gt;' : ''}</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>${(product.competitors || 0) &gt; 30 ? `&lt;li&gt;⚠️ High competition (${product.competitors} sellers)&lt;/li&gt;` : ''}</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>${metrics.estimatedMonthlyProfit &lt; 200 ? '&lt;li&gt;⚠️ Low revenue potential&lt;/li&gt;' : ''}</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Update products list</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function updateProductsList() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const container = document.getElementById('productsList');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const countElement = document.getElementById('productCount');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>countElement.textContent = products.length;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (products.length === 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>container.innerHTML = '&lt;p class="text-gray" style="text-align: center; padding: 32px;"&gt;No products added yet. Add your first Walmart product above!&lt;/p&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const tableHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;table class="table"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;thead&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;th&gt;Product&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;th&gt;Price&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;th&gt;Walmart Fees&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;th&gt;Profit&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;th&gt;Margin&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;th&gt;Competition&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;th&gt;Score&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;th&gt;Actions&lt;/th&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/thead&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;tbody&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>${products.map(product =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>const metrics = calculateProfitMetrics(product);</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>return `</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;div class="font-medium"&gt;${product.name}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;div class="text-xs text-gray"&gt;${product.category} • ${product.sellerType === 'wfs' ? 'WFS' : 'Self-fulfilled'}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;$${parseFloat(product.sellingPrice || 0).toFixed(2)}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="text-red"&gt;$${metrics.fees.totalFees.toFixed(2)}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="${metrics.profit &gt;= 0 ? 'text-green' : 'text-red'}"&gt;$${metrics.profit.toFixed(2)}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="${metrics.profitMargin &gt;= 20 ? 'text-green' : metrics.profitMargin &gt;= 10 ? 'text-yellow' : 'text-red'}"&gt;${metrics.profitMargin.toFixed(1)}%&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="${metrics.competitionColor}"&gt;${product.competitors || 0} (${metrics.competitionLevel})&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td class="${metrics.profitabilityScore &gt;= 70 ? 'text-green' : metrics.profitabilityScore &gt;= 50 ? 'text-yellow' : 'text-red'}"&gt;${metrics.profitabilityScore}/100&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;div class="flex space-x-2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;button onclick="analyzeProduct(${product.id})" class="btn btn-primary btn-sm"&gt;Analyze&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                            </span>&lt;button onclick="removeProduct(${product.id})" class="btn btn-red btn-sm"&gt;🗑️&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/tr&gt;</p>
+</body>
+</html>
