@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Walmart Product Research Tool</title>
+    <title>Walmart Product Research Tool - Working</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
@@ -23,6 +23,7 @@
         .grid-3 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
         .grid-2 { grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
         .btn { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; display: flex; align-items: center; justify-content: center; transition: all 0.2s; text-decoration: none; }
+        .btn:hover { transform: translateY(-1px); }
         .btn-primary { background: #2563eb; color: white; }
         .btn-primary:hover { background: #1d4ed8; }
         .btn-green { background: #059669; color: white; }
@@ -38,8 +39,8 @@
         .label { display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 4px; }
         .table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
         .table th, .table td { padding: 8px; text-align: left; border-bottom: 1px solid #e5e7eb; }
-        .table th { font-weight: 600; color: #374151; }
-        .table tr:hover { background: #f9fafb; }
+        .table th { font-weight: 600; color: #374151; background: #f9fafb; }
+        .table tr:hover { background: #f3f4f6; }
         .text-green { color: #059669; }
         .text-red { color: #dc2626; }
         .text-yellow { color: #d97706; }
@@ -79,7 +80,8 @@
         .mr-2 { margin-right: 8px; }
         .border-t { border-top: 1px solid #e5e7eb; }
         .pt-2 { padding-top: 8px; }
-        .icon { margin-right: 8px; }
+        .success { background: #d1fae5; color: #065f46; padding: 8px; border-radius: 4px; margin: 8px 0; }
+        .error { background: #fee2e2; color: #991b1b; padding: 8px; border-radius: 4px; margin: 8px 0; }
     </style>
 </head>
 <body>
@@ -103,10 +105,18 @@
                 </label>
                 <button onclick="clearAllData()" class="btn btn-red">🗑️ Clear All</button>
             </div>
+            <div id="exportStatus" class="mt-3"></div>
             <div class="mt-3 text-sm text-gray">
                 <p>💾 Your data is automatically saved to your browser</p>
                 <p>📊 Export to CSV for Excel analysis • 🔄 Backup/restore with JSON files</p>
             </div>
+        </div>
+
+        <!-- Quick Test -->
+        <div class="card">
+            <h2 class="section-title">🧪 Quick Test</h2>
+            <button onclick="addTestProduct()" class="btn btn-green">Add Test Product</button>
+            <div id="testStatus" class="mt-3"></div>
         </div>
 
         <!-- Add Product Form -->
@@ -172,6 +182,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary">➕ Add to Analysis</button>
             </form>
+            <div id="addStatus" class="mt-3"></div>
         </div>
 
         <!-- Products List -->
@@ -190,9 +201,18 @@
     </div>
 
     <script>
+        console.log('🚀 Walmart Tool Loading...');
+        
         // Global variables
         let products = [];
         let currentAnalysis = null;
+
+        function showStatus(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.innerHTML = `<div class="${type === 'error' ? 'error' : 'success'}">${message}</div>`;
+            }
+        }
 
         // Load data from localStorage
         function loadData() {
@@ -211,8 +231,10 @@
         function saveData() {
             try {
                 localStorage.setItem('walmartProducts', JSON.stringify(products));
+                return true;
             } catch (e) {
                 console.error('Error saving products:', e);
+                return false;
             }
         }
 
@@ -254,7 +276,6 @@
             const cost = parseFloat(product.costPrice) || 0;
             const competitors = parseInt(product.competitors) || 0;
             const sales = parseInt(product.estimatedSales) || 0;
-            const rank = parseInt(product.walmartRank) || 999999;
 
             const fees = calculateWalmartFees(selling, product.category, product.shippingWeight, product.sellerType);
             const totalCosts = cost + fees.totalFees;
@@ -307,31 +328,118 @@
             };
         }
 
-        // Add product
-        function addProduct(event) {
-            event.preventDefault();
-            
-            const product = {
+        // Add test product
+        function addTestProduct() {
+            const testProduct = {
                 id: Date.now(),
-                name: document.getElementById('productName').value,
-                sellingPrice: document.getElementById('sellingPrice').value,
-                costPrice: document.getElementById('costPrice').value,
-                shippingWeight: document.getElementById('shippingWeight').value,
-                category: document.getElementById('category').value,
-                sellerType: document.getElementById('sellerType').value,
-                competitors: document.getElementById('competitors').value,
-                estimatedSales: document.getElementById('estimatedSales').value,
-                walmartRank: document.getElementById('walmartRank').value,
+                name: 'Test Wireless Headphones',
+                sellingPrice: '29.99',
+                costPrice: '12.00',
+                shippingWeight: '0.5',
+                category: 'electronics',
+                sellerType: 'marketplace',
+                competitors: '25',
+                estimatedSales: '15',
+                walmartRank: '5000',
                 addedAt: new Date().toLocaleDateString()
             };
 
-            products.push(product);
-            saveData();
-            updateProductsList();
+            products.push(testProduct);
             
-            // Clear form
-            document.querySelector('form').reset();
-            document.getElementById('shippingWeight').value = '1';
+            if (saveData()) {
+                updateProductsList();
+                showStatus('testStatus', '✅ Test product added successfully!', 'success');
+            } else {
+                showStatus('testStatus', '❌ Failed to save test product', 'error');
+            }
+        }
+
+        // Add product with detailed debugging
+        function addProduct(event) {
+            event.preventDefault();
+            console.log('🔄 Adding product...');
+            
+            try {
+                // Get all form values
+                const productName = document.getElementById('productName').value;
+                const sellingPrice = document.getElementById('sellingPrice').value;
+                const costPrice = document.getElementById('costPrice').value;
+                const shippingWeight = document.getElementById('shippingWeight').value;
+                const category = document.getElementById('category').value;
+                const sellerType = document.getElementById('sellerType').value;
+                const competitors = document.getElementById('competitors').value;
+                const estimatedSales = document.getElementById('estimatedSales').value;
+                const walmartRank = document.getElementById('walmartRank').value;
+
+                console.log('📝 Form values collected:', {
+                    productName, sellingPrice, costPrice, shippingWeight, 
+                    category, sellerType, competitors, estimatedSales, walmartRank
+                });
+
+                // Validate required fields
+                if (!productName || productName.trim() === '') {
+                    showStatus('addStatus', '❌ Product name is required', 'error');
+                    return;
+                }
+                
+                if (!sellingPrice || parseFloat(sellingPrice) <= 0) {
+                    showStatus('addStatus', '❌ Valid selling price is required', 'error');
+                    return;
+                }
+                
+                if (!costPrice || parseFloat(costPrice) <= 0) {
+                    showStatus('addStatus', '❌ Valid cost price is required', 'error');
+                    return;
+                }
+
+                console.log('✅ Validation passed');
+
+                const product = {
+                    id: Date.now(),
+                    name: productName.trim(),
+                    sellingPrice: sellingPrice,
+                    costPrice: costPrice,
+                    shippingWeight: shippingWeight || '1',
+                    category: category,
+                    sellerType: sellerType,
+                    competitors: competitors || '0',
+                    estimatedSales: estimatedSales || '0',
+                    walmartRank: walmartRank || '',
+                    addedAt: new Date().toLocaleDateString()
+                };
+
+                console.log('📦 Product object created:', product);
+
+                // Test calculation before adding
+                try {
+                    const testMetrics = calculateProfitMetrics(product);
+                    console.log('🧮 Calculation test passed:', testMetrics);
+                } catch (calcError) {
+                    console.error('❌ Calculation error:', calcError);
+                    showStatus('addStatus', `❌ Calculation error: ${calcError.message}`, 'error');
+                    return;
+                }
+
+                products.push(product);
+                console.log(`📊 Product added to array. Total products: ${products.length}`);
+
+                if (saveData()) {
+                    updateProductsList();
+                    showStatus('addStatus', '✅ Product added successfully!', 'success');
+                    console.log('💾 Product saved and list updated');
+                    
+                    // Clear form
+                    document.querySelector('form').reset();
+                    document.getElementById('shippingWeight').value = '1';
+                    console.log('🧹 Form cleared');
+                } else {
+                    showStatus('addStatus', '❌ Failed to save product to storage', 'error');
+                    console.error('❌ Save failed');
+                }
+            } catch (error) {
+                console.error('❌ Add product error:', error);
+                showStatus('addStatus', `❌ Error: ${error.message}`, 'error');
+            }
         }
 
         // Remove product
@@ -341,7 +449,6 @@
                 saveData();
                 updateProductsList();
                 
-                // Hide analysis if current product was deleted
                 if (currentAnalysis && currentAnalysis.product.id === id) {
                     document.getElementById('analysisSection').classList.add('hidden');
                     currentAnalysis = null;
@@ -361,7 +468,6 @@
             document.getElementById('analysisContent').innerHTML = generateAnalysisHTML(product, metrics);
             document.getElementById('analysisSection').classList.remove('hidden');
             
-            // Scroll to analysis
             document.getElementById('analysisSection').scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -540,9 +646,9 @@
                                         <div class="font-medium">${product.name}</div>
                                         <div class="text-xs text-gray">${product.category} • ${product.sellerType === 'wfs' ? 'WFS' : 'Self-fulfilled'}</div>
                                     </td>
-                                    <td>$${parseFloat(product.sellingPrice || 0).toFixed(2)}</td>
-                                    <td class="text-red">$${metrics.fees.totalFees.toFixed(2)}</td>
-                                    <td class="${metrics.profit >= 0 ? 'text-green' : 'text-red'}">$${metrics.profit.toFixed(2)}</td>
+                                    <td>${parseFloat(product.sellingPrice || 0).toFixed(2)}</td>
+                                    <td class="text-red">${metrics.fees.totalFees.toFixed(2)}</td>
+                                    <td class="${metrics.profit >= 0 ? 'text-green' : 'text-red'}">${metrics.profit.toFixed(2)}</td>
                                     <td class="${metrics.profitMargin >= 20 ? 'text-green' : metrics.profitMargin >= 10 ? 'text-yellow' : 'text-red'}">${metrics.profitMargin.toFixed(1)}%</td>
                                     <td class="${metrics.competitionColor}">${product.competitors || 0} (${metrics.competitionLevel})</td>
                                     <td class="${metrics.profitabilityScore >= 70 ? 'text-green' : metrics.profitabilityScore >= 50 ? 'text-yellow' : 'text-red'}">${metrics.profitabilityScore}/100</td>
@@ -553,3 +659,172 @@
                                         </div>
                                     </td>
                                 </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+            
+            container.innerHTML = tableHTML;
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            try {
+                if (products.length === 0) {
+                    showStatus('exportStatus', '⚠️ No products to export! Add products first.', 'error');
+                    return;
+                }
+
+                const headers = [
+                    'Product Name', 'Category', 'Selling Price', 'Cost Price', 'Weight (lbs)',
+                    'Fulfillment', 'Competitors', 'Est. Monthly Sales', 'Walmart Rank',
+                    'Profit per Unit', 'Profit Margin (%)', 'ROI (%)', 'Est. Monthly Profit',
+                    'Walmart Fees', 'Recommendation', 'Score', 'Date Added'
+                ];
+
+                const csvData = products.map(product => {
+                    const metrics = calculateProfitMetrics(product);
+                    return [
+                        product.name, product.category, product.sellingPrice, product.costPrice,
+                        product.shippingWeight, product.sellerType === 'wfs' ? 'WFS' : 'Self-Fulfilled',
+                        product.competitors || 0, product.estimatedSales || 0, product.walmartRank || 'N/A',
+                        metrics.profit.toFixed(2), metrics.profitMargin.toFixed(2), metrics.roi.toFixed(2),
+                        metrics.estimatedMonthlyProfit.toFixed(2), metrics.fees.totalFees.toFixed(2),
+                        metrics.recommendation, metrics.profitabilityScore, product.addedAt
+                    ];
+                });
+
+                const csvContent = [headers, ...csvData]
+                    .map(row => row.map(field => `"${field}"`).join(','))
+                    .join('\n');
+
+                // Create and download file
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                
+                link.href = url;
+                link.download = `walmart-products-${new Date().toISOString().split('T')[0]}.csv`;
+                link.style.display = 'none';
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                URL.revokeObjectURL(url);
+                
+                showStatus('exportStatus', '✅ CSV exported successfully! Check your downloads folder.', 'success');
+                
+            } catch (error) {
+                console.error('CSV export error:', error);
+                showStatus('exportStatus', `❌ Export failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Export to JSON
+        function exportToJSON() {
+            try {
+                if (products.length === 0) {
+                    showStatus('exportStatus', '⚠️ No products to export!', 'error');
+                    return;
+                }
+
+                const dataToExport = {
+                    exportDate: new Date().toISOString(),
+                    totalProducts: products.length,
+                    products: products.map(product => ({
+                        ...product,
+                        analysis: calculateProfitMetrics(product)
+                    }))
+                };
+
+                const jsonContent = JSON.stringify(dataToExport, null, 2);
+                const blob = new Blob([jsonContent], { type: 'application/json;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                
+                link.href = url;
+                link.download = `walmart-research-backup-${new Date().toISOString().split('T')[0]}.json`;
+                link.style.display = 'none';
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                URL.revokeObjectURL(url);
+                
+                showStatus('exportStatus', '✅ JSON backup exported successfully!', 'success');
+                
+            } catch (error) {
+                console.error('JSON export error:', error);
+                showStatus('exportStatus', `❌ Backup failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Import from JSON
+        function importFromJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (data.products && Array.isArray(data.products)) {
+                        const importedProducts = data.products.map(p => ({
+                            id: Date.now() + Math.random(),
+                            name: p.name || '', sellingPrice: p.sellingPrice || '', costPrice: p.costPrice || '',
+                            shippingWeight: p.shippingWeight || '1', category: p.category || 'electronics',
+                            competitors: p.competitors || '', estimatedSales: p.estimatedSales || '',
+                            walmartRank: p.walmartRank || '', sellerType: p.sellerType || 'marketplace',
+                            addedAt: new Date().toLocaleDateString()
+                        }));
+                        
+                        if (confirm(`Import ${importedProducts.length} products? This will add to your existing products.`)) {
+                            products.push(...importedProducts);
+                            saveData();
+                            updateProductsList();
+                            showStatus('exportStatus', `✅ Successfully imported ${importedProducts.length} products!`, 'success');
+                        }
+                    } else {
+                        showStatus('exportStatus', '❌ Invalid file format. Please select a valid backup file.', 'error');
+                    }
+                } catch (error) {
+                    showStatus('exportStatus', '❌ Error reading file. Please make sure it\'s a valid JSON backup file.', 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // Clear all data
+        function clearAllData() {
+            if (confirm('Are you sure you want to delete ALL products? This cannot be undone.')) {
+                products = [];
+                saveData();
+                updateProductsList();
+                document.getElementById('analysisSection').classList.add('hidden');
+                currentAnalysis = null;
+                showStatus('exportStatus', '✅ All data has been cleared.', 'success');
+            }
+        }
+
+        // Initialize app
+        function init() {
+            console.log('Initializing Walmart Tool...');
+            loadData();
+            updateProductsList();
+            console.log('✅ Walmart Product Research Tool loaded successfully!');
+        }
+
+        // Run when page loads
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>
