@@ -1,830 +1,144 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Walmart Product Research Tool - Working</title>
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Walmart Seller Research — Browser Demo (Alt Loader)</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/browser/build/stlite.css" />
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; 
-            background-color: #f9fafb;
-            line-height: 1.6;
-        }
-        .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
-        .card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 32px; padding: 24px; }
-        .header { text-align: center; margin-bottom: 32px; }
-        .title { font-size: 2rem; font-weight: bold; color: #1f2937; margin-bottom: 8px; }
-        .subtitle { color: #6b7280; margin-bottom: 8px; }
-        .features { color: #2563eb; font-size: 0.875rem; }
-        .section-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; }
-        .grid { display: grid; gap: 16px; }
-        .grid-4 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
-        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
-        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
-        .btn { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; display: flex; align-items: center; justify-content: center; transition: all 0.2s; text-decoration: none; }
-        .btn:hover { transform: translateY(-1px); }
-        .btn-primary { background: #2563eb; color: white; }
-        .btn-primary:hover { background: #1d4ed8; }
-        .btn-green { background: #059669; color: white; }
-        .btn-green:hover { background: #047857; }
-        .btn-red { background: #dc2626; color: white; }
-        .btn-red:hover { background: #b91c1c; }
-        .btn-purple { background: #7c3aed; color: white; }
-        .btn-purple:hover { background: #6d28d9; }
-        .btn-sm { padding: 4px 8px; font-size: 0.75rem; }
-        .input { width: 100%; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; }
-        .input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
-        .select { width: 100%; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: white; }
-        .label { display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 4px; }
-        .table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
-        .table th, .table td { padding: 8px; text-align: left; border-bottom: 1px solid #e5e7eb; }
-        .table th { font-weight: 600; color: #374151; background: #f9fafb; }
-        .table tr:hover { background: #f3f4f6; }
-        .text-green { color: #059669; }
-        .text-red { color: #dc2626; }
-        .text-yellow { color: #d97706; }
-        .text-blue { color: #2563eb; }
-        .text-gray { color: #6b7280; }
-        .text-sm { font-size: 0.875rem; }
-        .text-xs { font-size: 0.75rem; }
-        .font-medium { font-weight: 500; }
-        .font-bold { font-weight: 700; }
-        .bg-blue { background: #dbeafe; }
-        .bg-green { background: #d1fae5; }
-        .bg-purple { background: #e9d5ff; }
-        .bg-orange { background: #fed7aa; }
-        .bg-gray { background: #f3f4f6; }
-        .metric-card { padding: 16px; border-radius: 8px; }
-        .metric-title { font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 8px; }
-        .metric-value { font-size: 1.5rem; font-weight: bold; margin-bottom: 4px; }
-        .metric-subtitle { font-size: 0.75rem; color: #6b7280; }
-        .progress-bar { width: 100%; height: 12px; background: #e5e7eb; border-radius: 6px; overflow: hidden; }
-        .progress-fill { height: 100%; border-radius: 6px; transition: width 0.3s; }
-        .progress-green { background: #10b981; }
-        .progress-yellow { background: #f59e0b; }
-        .progress-red { background: #ef4444; }
-        .hidden { display: none; }
-        .flex { display: flex; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        .space-x-2 > * + * { margin-left: 8px; }
-        .space-y-1 > * + * { margin-top: 4px; }
-        .space-y-2 > * + * { margin-top: 8px; }
-        .mb-1 { margin-bottom: 4px; }
-        .mb-2 { margin-bottom: 8px; }
-        .mb-3 { margin-bottom: 12px; }
-        .mb-4 { margin-bottom: 16px; }
-        .mt-2 { margin-top: 8px; }
-        .mt-3 { margin-top: 12px; }
-        .mr-2 { margin-right: 8px; }
-        .border-t { border-top: 1px solid #e5e7eb; }
-        .pt-2 { padding-top: 8px; }
-        .success { background: #d1fae5; color: #065f46; padding: 8px; border-radius: 4px; margin: 8px 0; }
-        .error { background: #fee2e2; color: #991b1b; padding: 8px; border-radius: 4px; margin: 8px 0; }
+      body { background:#F3F4F6; margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto; }
+      .wrap { max-width:1100px; margin:1.5rem auto; padding:0 1rem; }
+      .note { background:#fff; border:1px solid #E5E7EB; border-radius:12px; padding:1rem 1.25rem; color:#374151; }
+      .loading { margin:1rem 0; padding:.75rem 1rem; background:#fffbe6; border:1px solid #f6e05e; border-radius:10px; color:#92400e; }
+      #app { margin-top:1rem; }
     </style>
-</head>
-<body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1 class="title">🛒 Walmart Product Research Tool</h1>
-            <p class="subtitle">Analyze profit potential and competition for Walmart Marketplace</p>
-            <div class="features">✓ Walmart-specific fees ✓ Competition analysis ✓ Data export/import ✓ Private & Secure</div>
-        </div>
-
-        <!-- Data Management -->
-        <div class="card">
-            <h2 class="section-title">💾 Data Management</h2>
-            <div class="grid grid-4">
-                <button onclick="exportToCSV()" class="btn btn-green">📊 Export CSV</button>
-                <button onclick="exportToJSON()" class="btn btn-primary">💾 Backup Data</button>
-                <label class="btn btn-purple" style="cursor: pointer;">
-                    📁 Import Data
-                    <input type="file" accept=".json" onchange="importFromJSON(event)" class="hidden">
-                </label>
-                <button onclick="clearAllData()" class="btn btn-red">🗑️ Clear All</button>
-            </div>
-            <div id="exportStatus" class="mt-3"></div>
-            <div class="mt-3 text-sm text-gray">
-                <p>💾 Your data is automatically saved to your browser</p>
-                <p>📊 Export to CSV for Excel analysis • 🔄 Backup/restore with JSON files</p>
-            </div>
-        </div>
-
-        <!-- Quick Test -->
-        <div class="card">
-            <h2 class="section-title">🧪 Quick Test</h2>
-            <button onclick="addTestProduct()" class="btn btn-green">Add Test Product</button>
-            <div id="testStatus" class="mt-3"></div>
-        </div>
-
-        <!-- Add Product Form -->
-        <div class="card">
-            <h2 class="section-title">➕ Add New Walmart Product</h2>
-            <form onsubmit="addProduct(event)">
-                <div class="grid grid-4 mb-4">
-                    <div style="grid-column: span 2;">
-                        <label class="label">Product Name</label>
-                        <input type="text" id="productName" class="input" placeholder="Enter product name" required>
-                    </div>
-                    <div>
-                        <label class="label">Walmart Selling Price ($)</label>
-                        <input type="number" id="sellingPrice" class="input" step="0.01" placeholder="0.00" required>
-                    </div>
-                    <div>
-                        <label class="label">Your Cost Price ($)</label>
-                        <input type="number" id="costPrice" class="input" step="0.01" placeholder="0.00" required>
-                    </div>
-                    <div>
-                        <label class="label">Shipping Weight (lbs)</label>
-                        <input type="number" id="shippingWeight" class="input" step="0.1" value="1" min="0.1">
-                    </div>
-                    <div>
-                        <label class="label">Category</label>
-                        <select id="category" class="select">
-                            <option value="electronics">Electronics</option>
-                            <option value="beauty">Beauty</option>
-                            <option value="pets">Pets</option>
-                            <option value="home">Home</option>
-                            <option value="clothing">Clothing</option>
-                            <option value="toys">Toys</option>
-                            <option value="sports">Sports</option>
-                            <option value="books">Books</option>
-                            <option value="automotive">Automotive</option>
-                            <option value="health">Health</option>
-                            <option value="baby">Baby</option>
-                            <option value="grocery">Grocery</option>
-                            <option value="jewelry">Jewelry</option>
-                            <option value="office">Office</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label">Fulfillment</label>
-                        <select id="sellerType" class="select">
-                            <option value="marketplace">Self-Fulfilled</option>
-                            <option value="wfs">Walmart Fulfillment (WFS)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label">Competitors</label>
-                        <input type="number" id="competitors" class="input" placeholder="0" min="0">
-                    </div>
-                    <div>
-                        <label class="label">Est. Monthly Sales</label>
-                        <input type="number" id="estimatedSales" class="input" placeholder="0" min="0">
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <label class="label">Walmart Best Seller Rank (optional)</label>
-                    <input type="number" id="walmartRank" class="input" style="width: 25%;" placeholder="e.g., 15000" min="1">
-                    <p class="text-xs text-gray mt-1">Lower numbers = better ranking (1 = #1 bestseller)</p>
-                </div>
-                <button type="submit" class="btn btn-primary">➕ Add to Analysis</button>
-            </form>
-            <div id="addStatus" class="mt-3"></div>
-        </div>
-
-        <!-- Products List -->
-        <div class="card">
-            <h2 class="section-title">📋 Your Walmart Products (<span id="productCount">0</span>)</h2>
-            <div id="productsList">
-                <p class="text-gray" style="text-align: center; padding: 32px;">No products added yet. Add your first Walmart product above!</p>
-            </div>
-        </div>
-
-        <!-- Analysis Section -->
-        <div id="analysisSection" class="card hidden">
-            <h2 class="section-title">📦 <span id="analysisTitle">Product Analysis</span></h2>
-            <div id="analysisContent"></div>
-        </div>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="note">
+        <strong>Heads up:</strong> This demo runs Streamlit entirely in your browser (via <em>stlite</em>). 
+        First load can take 10–30 seconds while it downloads Python (Pyodide). If it stalls, try Chrome/Edge and disable ad/script blockers for <code>cdn.jsdelivr.net</code>.
+      </div>
+      <div class="loading" id="loadingBox">Loading Python runtime… this can take ~10–30 seconds on first load.</div>
     </div>
+    <div id="app"></div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@stlite/browser/build/stlite.js"></script>
     <script>
-        console.log('🚀 Walmart Tool Loading...');
-        
-        // Global variables
-        let products = [];
-        let currentAnalysis = null;
-
-        function showStatus(elementId, message, type = 'info') {
-            const element = document.getElementById(elementId);
-            if (element) {
-                element.innerHTML = `<div class="${type === 'error' ? 'error' : 'success'}">${message}</div>`;
-            }
-        }
-
-        // Load data from localStorage
-        function loadData() {
-            try {
-                const savedProducts = localStorage.getItem('walmartProducts');
-                if (savedProducts) {
-                    products = JSON.parse(savedProducts);
-                    updateProductsList();
-                }
-            } catch (e) {
-                console.error('Error loading saved products:', e);
-            }
-        }
-
-        // Save data to localStorage
-        function saveData() {
-            try {
-                localStorage.setItem('walmartProducts', JSON.stringify(products));
-                return true;
-            } catch (e) {
-                console.error('Error saving products:', e);
-                return false;
-            }
-        }
-
-        // Calculate Walmart fees
-        function calculateWalmartFees(sellingPrice, category, weight, sellerType) {
-            const price = parseFloat(sellingPrice) || 0;
-            const shippingWeight = parseFloat(weight) || 1;
-            
-            const referralFees = {
-                'electronics': 8.0, 'beauty': 8.0, 'pets': 8.0, 'home': 15.0,
-                'clothing': 16.0, 'toys': 8.0, 'sports': 8.0, 'books': 15.0,
-                'automotive': 12.0, 'health': 8.0, 'baby': 8.0, 'grocery': 8.0,
-                'jewelry': 20.0, 'office': 15.0
-            };
-
-            const referralFeeRate = referralFees[category] || 15.0;
-            const referralFee = (price * referralFeeRate) / 100;
-
-            let fulfillmentFee = 0;
-            if (sellerType === 'wfs') {
-                if (shippingWeight <= 1) fulfillmentFee = 3.26;
-                else if (shippingWeight <= 2) fulfillmentFee = 4.75;
-                else if (shippingWeight <= 3) fulfillmentFee = 5.40;
-                else if (shippingWeight <= 5) fulfillmentFee = 6.75;
-                else fulfillmentFee = 6.75 + (shippingWeight - 5) * 0.85;
-            }
-
-            const paymentFee = (price * 0.029) + 0.30;
-
-            return {
-                referralFee, fulfillmentFee, paymentFee,
-                totalFees: referralFee + fulfillmentFee + paymentFee
-            };
-        }
-
-        // Calculate profit metrics
-        function calculateProfitMetrics(product) {
-            const selling = parseFloat(product.sellingPrice) || 0;
-            const cost = parseFloat(product.costPrice) || 0;
-            const competitors = parseInt(product.competitors) || 0;
-            const sales = parseInt(product.estimatedSales) || 0;
-
-            const fees = calculateWalmartFees(selling, product.category, product.shippingWeight, product.sellerType);
-            const totalCosts = cost + fees.totalFees;
-            const profit = selling - totalCosts;
-            const profitMargin = selling > 0 ? (profit / selling) * 100 : 0;
-            const roi = cost > 0 ? (profit / cost) * 100 : 0;
-            const estimatedMonthlyProfit = profit * sales;
-
-            let competitionLevel = 'Low';
-            let competitionColor = 'text-green';
-            if (competitors > 50) {
-                competitionLevel = 'High';
-                competitionColor = 'text-red';
-            } else if (competitors > 20) {
-                competitionLevel = 'Medium';
-                competitionColor = 'text-yellow';
-            }
-
-            let profitabilityScore = 0;
-            if (profitMargin > 0) profitabilityScore += 10;
-            if (profitMargin > 15) profitabilityScore += 10;
-            if (profitMargin > 25) profitabilityScore += 10;
-            if (profitMargin > 35) profitabilityScore += 10;
-            if (roi > 50) profitabilityScore += 10;
-            if (roi > 100) profitabilityScore += 10;
-            if (competitors < 10) profitabilityScore += 20;
-            else if (competitors < 25) profitabilityScore += 15;
-            else if (competitors < 50) profitabilityScore += 10;
-            if (sales > 5) profitabilityScore += 5;
-            if (sales > 20) profitabilityScore += 5;
-
-            let recommendation = 'Not Recommended';
-            let recommendationColor = 'text-red';
-            let recommendationIcon = '❌';
-
-            if (profitabilityScore >= 75) {
-                recommendation = 'Highly Recommended';
-                recommendationColor = 'text-green';
-                recommendationIcon = '✅';
-            } else if (profitabilityScore >= 55) {
-                recommendation = 'Worth Considering';
-                recommendationColor = 'text-yellow';
-                recommendationIcon = '⚠️';
-            }
-
-            return {
-                profit, profitMargin, roi, estimatedMonthlyProfit,
-                competitionLevel, competitionColor, profitabilityScore,
-                recommendation, recommendationColor, recommendationIcon, fees
-            };
-        }
-
-        // Add test product
-        function addTestProduct() {
-            const testProduct = {
-                id: Date.now(),
-                name: 'Test Wireless Headphones',
-                sellingPrice: '29.99',
-                costPrice: '12.00',
-                shippingWeight: '0.5',
-                category: 'electronics',
-                sellerType: 'marketplace',
-                competitors: '25',
-                estimatedSales: '15',
-                walmartRank: '5000',
-                addedAt: new Date().toLocaleDateString()
-            };
-
-            products.push(testProduct);
-            
-            if (saveData()) {
-                updateProductsList();
-                showStatus('testStatus', '✅ Test product added successfully!', 'success');
-            } else {
-                showStatus('testStatus', '❌ Failed to save test product', 'error');
-            }
-        }
-
-        // Add product with detailed debugging
-        function addProduct(event) {
-            event.preventDefault();
-            console.log('🔄 Adding product...');
-            
-            try {
-                // Get all form values
-                const productName = document.getElementById('productName').value;
-                const sellingPrice = document.getElementById('sellingPrice').value;
-                const costPrice = document.getElementById('costPrice').value;
-                const shippingWeight = document.getElementById('shippingWeight').value;
-                const category = document.getElementById('category').value;
-                const sellerType = document.getElementById('sellerType').value;
-                const competitors = document.getElementById('competitors').value;
-                const estimatedSales = document.getElementById('estimatedSales').value;
-                const walmartRank = document.getElementById('walmartRank').value;
-
-                console.log('📝 Form values collected:', {
-                    productName, sellingPrice, costPrice, shippingWeight, 
-                    category, sellerType, competitors, estimatedSales, walmartRank
-                });
-
-                // Validate required fields
-                if (!productName || productName.trim() === '') {
-                    showStatus('addStatus', '❌ Product name is required', 'error');
-                    return;
-                }
-                
-                if (!sellingPrice || parseFloat(sellingPrice) <= 0) {
-                    showStatus('addStatus', '❌ Valid selling price is required', 'error');
-                    return;
-                }
-                
-                if (!costPrice || parseFloat(costPrice) <= 0) {
-                    showStatus('addStatus', '❌ Valid cost price is required', 'error');
-                    return;
-                }
-
-                console.log('✅ Validation passed');
-
-                const product = {
-                    id: Date.now(),
-                    name: productName.trim(),
-                    sellingPrice: sellingPrice,
-                    costPrice: costPrice,
-                    shippingWeight: shippingWeight || '1',
-                    category: category,
-                    sellerType: sellerType,
-                    competitors: competitors || '0',
-                    estimatedSales: estimatedSales || '0',
-                    walmartRank: walmartRank || '',
-                    addedAt: new Date().toLocaleDateString()
-                };
-
-                console.log('📦 Product object created:', product);
-
-                // Test calculation before adding
-                try {
-                    const testMetrics = calculateProfitMetrics(product);
-                    console.log('🧮 Calculation test passed:', testMetrics);
-                } catch (calcError) {
-                    console.error('❌ Calculation error:', calcError);
-                    showStatus('addStatus', `❌ Calculation error: ${calcError.message}`, 'error');
-                    return;
-                }
-
-                products.push(product);
-                console.log(`📊 Product added to array. Total products: ${products.length}`);
-
-                if (saveData()) {
-                    updateProductsList();
-                    showStatus('addStatus', '✅ Product added successfully!', 'success');
-                    console.log('💾 Product saved and list updated');
-                    
-                    // Clear form
-                    document.querySelector('form').reset();
-                    document.getElementById('shippingWeight').value = '1';
-                    console.log('🧹 Form cleared');
-                } else {
-                    showStatus('addStatus', '❌ Failed to save product to storage', 'error');
-                    console.error('❌ Save failed');
-                }
-            } catch (error) {
-                console.error('❌ Add product error:', error);
-                showStatus('addStatus', `❌ Error: ${error.message}`, 'error');
-            }
-        }
-
-        // Remove product
-        function removeProduct(id) {
-            if (confirm('Are you sure you want to remove this product?')) {
-                products = products.filter(p => p.id !== id);
-                saveData();
-                updateProductsList();
-                
-                if (currentAnalysis && currentAnalysis.product.id === id) {
-                    document.getElementById('analysisSection').classList.add('hidden');
-                    currentAnalysis = null;
-                }
-            }
-        }
-
-        // Analyze product
-        function analyzeProduct(id) {
-            const product = products.find(p => p.id === id);
-            if (!product) return;
-
-            const metrics = calculateProfitMetrics(product);
-            currentAnalysis = { product, metrics };
-            
-            document.getElementById('analysisTitle').textContent = `Walmart Analysis: ${product.name}`;
-            document.getElementById('analysisContent').innerHTML = generateAnalysisHTML(product, metrics);
-            document.getElementById('analysisSection').classList.remove('hidden');
-            
-            document.getElementById('analysisSection').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Generate analysis HTML
-        function generateAnalysisHTML(product, metrics) {
-            return `
-                <div class="grid grid-4 mb-4">
-                    <div class="metric-card bg-blue">
-                        <div class="metric-title">💰 Net Profit per Sale</div>
-                        <div class="metric-value text-blue">$${metrics.profit.toFixed(2)}</div>
-                        <div class="metric-subtitle">After all Walmart fees</div>
-                    </div>
-                    <div class="metric-card bg-green">
-                        <div class="metric-title">📈 Profit Margin</div>
-                        <div class="metric-value text-green">${metrics.profitMargin.toFixed(1)}%</div>
-                        <div class="metric-subtitle">Industry avg: 15-25%</div>
-                    </div>
-                    <div class="metric-card bg-purple">
-                        <div class="metric-title">🧮 ROI</div>
-                        <div class="metric-value text-blue">${metrics.roi.toFixed(1)}%</div>
-                        <div class="metric-subtitle">Return on investment</div>
-                    </div>
-                    <div class="metric-card bg-orange">
-                        <div class="metric-title">👥 Competition</div>
-                        <div class="metric-value ${metrics.competitionColor}">${metrics.competitionLevel}</div>
-                        <div class="metric-subtitle">${product.competitors || 0} sellers</div>
-                    </div>
-                </div>
-
-                <div class="grid grid-3 mb-4">
-                    <div class="metric-card bg-gray">
-                        <h3 class="font-medium mb-3">Walmart Fee Breakdown</h3>
-                        <div class="space-y-2 text-sm">
-                            <div class="flex justify-between">
-                                <span>Referral Fee:</span>
-                                <span>$${metrics.fees.referralFee.toFixed(2)}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Payment Processing:</span>
-                                <span>$${metrics.fees.paymentFee.toFixed(2)}</span>
-                            </div>
-                            ${product.sellerType === 'wfs' ? `
-                            <div class="flex justify-between">
-                                <span>WFS Fulfillment:</span>
-                                <span>$${metrics.fees.fulfillmentFee.toFixed(2)}</span>
-                            </div>` : ''}
-                            <div class="flex justify-between font-medium border-t pt-2 text-red">
-                                <span>Total Walmart Fees:</span>
-                                <span>$${metrics.fees.totalFees.toFixed(2)}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="metric-card bg-gray">
-                        <h3 class="font-medium mb-3">Cost Structure</h3>
-                        <div class="space-y-2 text-sm">
-                            <div class="flex justify-between">
-                                <span>Product Cost:</span>
-                                <span>$${parseFloat(product.costPrice || 0).toFixed(2)}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Walmart Fees:</span>
-                                <span>$${metrics.fees.totalFees.toFixed(2)}</span>
-                            </div>
-                            <div class="flex justify-between font-medium border-t pt-2">
-                                <span>Total Costs:</span>
-                                <span>$${(parseFloat(product.costPrice || 0) + metrics.fees.totalFees).toFixed(2)}</span>
-                            </div>
-                            <div class="flex justify-between font-medium text-green">
-                                <span>Net Profit:</span>
-                                <span>$${metrics.profit.toFixed(2)}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="metric-card bg-gray">
-                        <h3 class="font-medium mb-3">Performance Metrics</h3>
-                        <div class="space-y-2 text-sm">
-                            <div class="flex justify-between">
-                                <span>Est. Monthly Sales:</span>
-                                <span>${product.estimatedSales || 0} units</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Monthly Revenue:</span>
-                                <span>$${((parseFloat(product.sellingPrice || 0)) * (parseInt(product.estimatedSales || 0))).toFixed(2)}</span>
-                            </div>
-                            <div class="flex justify-between font-medium border-t pt-2">
-                                <span>Monthly Profit:</span>
-                                <span class="${metrics.estimatedMonthlyProfit >= 0 ? 'text-green' : 'text-red'}">
-                                    $${metrics.estimatedMonthlyProfit.toFixed(2)}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="metric-card bg-gray">
-                    <div class="flex justify-between items-center mb-4">
-                        <div>
-                            <h3 class="font-medium mb-1">Walmart Selling Recommendation</h3>
-                            <div class="flex items-center">
-                                <span class="mr-2">${metrics.recommendationIcon}</span>
-                                <span class="font-medium ${metrics.recommendationColor}">${metrics.recommendation}</span>
-                            </div>
-                        </div>
-                        <div style="text-align: right;">
-                            <div class="text-sm text-gray">Profitability Score</div>
-                            <div style="font-size: 1.5rem; font-weight: bold;">${metrics.profitabilityScore}/100</div>
-                        </div>
-                    </div>
-                    
-                    <div class="progress-bar mb-4">
-                        <div class="progress-fill ${
-                            metrics.profitabilityScore >= 75 ? 'progress-green' : 
-                            metrics.profitabilityScore >= 55 ? 'progress-yellow' : 'progress-red'
-                        }" style="width: ${metrics.profitabilityScore}%"></div>
-                    </div>
-
-                    <div class="grid grid-2 text-sm text-gray">
-                        <div>
-                            <h4 class="font-medium mb-2 text-green">Strengths:</h4>
-                            <ul class="space-y-1">
-                                ${metrics.profitMargin > 25 ? `<li>✅ Strong profit margin (${metrics.profitMargin.toFixed(1)}%)</li>` : ''}
-                                ${metrics.roi > 100 ? `<li>✅ Excellent ROI (${metrics.roi.toFixed(1)}%)</li>` : ''}
-                                ${(product.competitors || 0) < 20 ? '<li>✅ Low competition niche</li>' : ''}
-                                ${metrics.estimatedMonthlyProfit > 500 ? '<li>✅ Good revenue potential</li>' : ''}
-                            </ul>
-                        </div>
-                        
-                        <div>
-                            <h4 class="font-medium mb-2 text-red">Areas of Concern:</h4>
-                            <ul class="space-y-1">
-                                ${metrics.profitMargin <= 15 ? `<li>⚠️ Low profit margin (${metrics.profitMargin.toFixed(1)}%)</li>` : ''}
-                                ${metrics.fees.totalFees > (parseFloat(product.sellingPrice) * 0.3) ? '<li>⚠️ High Walmart fees relative to price</li>' : ''}
-                                ${(product.competitors || 0) > 30 ? `<li>⚠️ High competition (${product.competitors} sellers)</li>` : ''}
-                                ${metrics.estimatedMonthlyProfit < 200 ? '<li>⚠️ Low revenue potential</li>' : ''}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Update products list
-        function updateProductsList() {
-            const container = document.getElementById('productsList');
-            const countElement = document.getElementById('productCount');
-            
-            countElement.textContent = products.length;
-
-            if (products.length === 0) {
-                container.innerHTML = '<p class="text-gray" style="text-align: center; padding: 32px;">No products added yet. Add your first Walmart product above!</p>';
-                return;
-            }
-
-            const tableHTML = `
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Walmart Fees</th>
-                            <th>Profit</th>
-                            <th>Margin</th>
-                            <th>Competition</th>
-                            <th>Score</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${products.map(product => {
-                            const metrics = calculateProfitMetrics(product);
-                            return `
-                                <tr>
-                                    <td>
-                                        <div class="font-medium">${product.name}</div>
-                                        <div class="text-xs text-gray">${product.category} • ${product.sellerType === 'wfs' ? 'WFS' : 'Self-fulfilled'}</div>
-                                    </td>
-                                    <td>${parseFloat(product.sellingPrice || 0).toFixed(2)}</td>
-                                    <td class="text-red">${metrics.fees.totalFees.toFixed(2)}</td>
-                                    <td class="${metrics.profit >= 0 ? 'text-green' : 'text-red'}">${metrics.profit.toFixed(2)}</td>
-                                    <td class="${metrics.profitMargin >= 20 ? 'text-green' : metrics.profitMargin >= 10 ? 'text-yellow' : 'text-red'}">${metrics.profitMargin.toFixed(1)}%</td>
-                                    <td class="${metrics.competitionColor}">${product.competitors || 0} (${metrics.competitionLevel})</td>
-                                    <td class="${metrics.profitabilityScore >= 70 ? 'text-green' : metrics.profitabilityScore >= 50 ? 'text-yellow' : 'text-red'}">${metrics.profitabilityScore}/100</td>
-                                    <td>
-                                        <div class="flex space-x-2">
-                                            <button onclick="analyzeProduct(${product.id})" class="btn btn-primary btn-sm">Analyze</button>
-                                            <button onclick="removeProduct(${product.id})" class="btn btn-red btn-sm">🗑️</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            `;
-                        }).join('')}
-                    </tbody>
-                </table>
-            `;
-            
-            container.innerHTML = tableHTML;
-        }
-
-        // Export to CSV
-        function exportToCSV() {
-            try {
-                if (products.length === 0) {
-                    showStatus('exportStatus', '⚠️ No products to export! Add products first.', 'error');
-                    return;
-                }
-
-                const headers = [
-                    'Product Name', 'Category', 'Selling Price', 'Cost Price', 'Weight (lbs)',
-                    'Fulfillment', 'Competitors', 'Est. Monthly Sales', 'Walmart Rank',
-                    'Profit per Unit', 'Profit Margin (%)', 'ROI (%)', 'Est. Monthly Profit',
-                    'Walmart Fees', 'Recommendation', 'Score', 'Date Added'
-                ];
-
-                const csvData = products.map(product => {
-                    const metrics = calculateProfitMetrics(product);
-                    return [
-                        product.name, product.category, product.sellingPrice, product.costPrice,
-                        product.shippingWeight, product.sellerType === 'wfs' ? 'WFS' : 'Self-Fulfilled',
-                        product.competitors || 0, product.estimatedSales || 0, product.walmartRank || 'N/A',
-                        metrics.profit.toFixed(2), metrics.profitMargin.toFixed(2), metrics.roi.toFixed(2),
-                        metrics.estimatedMonthlyProfit.toFixed(2), metrics.fees.totalFees.toFixed(2),
-                        metrics.recommendation, metrics.profitabilityScore, product.addedAt
-                    ];
-                });
-
-                const csvContent = [headers, ...csvData]
-                    .map(row => row.map(field => `"${field}"`).join(','))
-                    .join('\n');
-
-                // Create and download file
-                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement('a');
-                const url = URL.createObjectURL(blob);
-                
-                link.href = url;
-                link.download = `walmart-products-${new Date().toISOString().split('T')[0]}.csv`;
-                link.style.display = 'none';
-                
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                URL.revokeObjectURL(url);
-                
-                showStatus('exportStatus', '✅ CSV exported successfully! Check your downloads folder.', 'success');
-                
-            } catch (error) {
-                console.error('CSV export error:', error);
-                showStatus('exportStatus', `❌ Export failed: ${error.message}`, 'error');
-            }
-        }
-
-        // Export to JSON
-        function exportToJSON() {
-            try {
-                if (products.length === 0) {
-                    showStatus('exportStatus', '⚠️ No products to export!', 'error');
-                    return;
-                }
-
-                const dataToExport = {
-                    exportDate: new Date().toISOString(),
-                    totalProducts: products.length,
-                    products: products.map(product => ({
-                        ...product,
-                        analysis: calculateProfitMetrics(product)
-                    }))
-                };
-
-                const jsonContent = JSON.stringify(dataToExport, null, 2);
-                const blob = new Blob([jsonContent], { type: 'application/json;charset=utf-8;' });
-                const link = document.createElement('a');
-                const url = URL.createObjectURL(blob);
-                
-                link.href = url;
-                link.download = `walmart-research-backup-${new Date().toISOString().split('T')[0]}.json`;
-                link.style.display = 'none';
-                
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                URL.revokeObjectURL(url);
-                
-                showStatus('exportStatus', '✅ JSON backup exported successfully!', 'success');
-                
-            } catch (error) {
-                console.error('JSON export error:', error);
-                showStatus('exportStatus', `❌ Backup failed: ${error.message}`, 'error');
-            }
-        }
-
-        // Import from JSON
-        function importFromJSON(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    
-                    if (data.products && Array.isArray(data.products)) {
-                        const importedProducts = data.products.map(p => ({
-                            id: Date.now() + Math.random(),
-                            name: p.name || '', sellingPrice: p.sellingPrice || '', costPrice: p.costPrice || '',
-                            shippingWeight: p.shippingWeight || '1', category: p.category || 'electronics',
-                            competitors: p.competitors || '', estimatedSales: p.estimatedSales || '',
-                            walmartRank: p.walmartRank || '', sellerType: p.sellerType || 'marketplace',
-                            addedAt: new Date().toLocaleDateString()
-                        }));
-                        
-                        if (confirm(`Import ${importedProducts.length} products? This will add to your existing products.`)) {
-                            products.push(...importedProducts);
-                            saveData();
-                            updateProductsList();
-                            showStatus('exportStatus', `✅ Successfully imported ${importedProducts.length} products!`, 'success');
-                        }
-                    } else {
-                        showStatus('exportStatus', '❌ Invalid file format. Please select a valid backup file.', 'error');
-                    }
-                } catch (error) {
-                    showStatus('exportStatus', '❌ Error reading file. Please make sure it\'s a valid JSON backup file.', 'error');
-                }
-            };
-            reader.readAsText(file);
-            event.target.value = '';
-        }
-
-        // Clear all data
-        function clearAllData() {
-            if (confirm('Are you sure you want to delete ALL products? This cannot be undone.')) {
-                products = [];
-                saveData();
-                updateProductsList();
-                document.getElementById('analysisSection').classList.add('hidden');
-                currentAnalysis = null;
-                showStatus('exportStatus', '✅ All data has been cleared.', 'success');
-            }
-        }
-
-        // Initialize app
-        function init() {
-            console.log('Initializing Walmart Tool...');
-            loadData();
-            updateProductsList();
-            console.log('✅ Walmart Product Research Tool loaded successfully!');
-        }
-
-        // Run when page loads
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
-        } else {
-            init();
-        }
+      const files = {
+        "streamlit_app.py": { content: `
+import streamlit as st
+st.set_page_config(page_title="Walmart Seller Research — Browser Demo", page_icon="🛒", layout="wide")
+st.markdown('''
+<style>
+:root{
+  --wm-blue:#0071CE; --wm-yellow:#FFC220; --wm-dark:#004F9F;
+  --wm-text:#1F2937; --wm-bg:#F3F4F6; --wm-card:#FFFFFF;
+}
+.block-container { padding-top: 2rem; }
+.card { background: var(--wm-card); border: 1px solid #E5E7EB; border-radius: 14px; padding: 1rem 1.25rem; box-shadow: 0 6px 18px rgba(0,0,0,0.04); }
+.badge { display:inline-block; padding:.25rem .5rem; border-radius:8px; background: var(--wm-yellow); color:#111827; font-weight:600; font-size:.85rem; }
+</style>
+''', unsafe_allow_html=True)
+left, right = st.columns([5,2])
+with left:
+    st.title("Walmart Seller Research")
+    st.caption("Track competitors, prices, badges, and trends — Walmart-themed UI (client-side demo).")
+with right:
+    st.markdown("<div style='text-align:right'><span class='badge'>Browser Demo</span></div>", unsafe_allow_html=True)
+st.divider()
+c1, c2, c3, c4, c5 = st.columns(5)
+with c1: st.metric("Competitors", "—")
+with c2: st.metric("Buy Box (est.)", "—")
+with c3: st.metric("Avg Price", "—")
+with c4: st.metric("In-Stock %", "—")
+with c5: st.metric("Tracked SKUs", "—")
+st.page_link("pages/Pricing.py", label="Go to Pricing →", icon="💳")
+st.page_link("pages/Competitors.py", label="Competitor Comparison", icon="🆚")
+st.page_link("pages/Trends.py", label="Trends", icon="📈")
+st.page_link("pages/Alerts.py", label="Alerts", icon="🔔")
+st.page_link("pages/Exports.py", label="Exports", icon="📤")
+        ` },
+        "pages/Pricing.py": { content: `
+import streamlit as st
+st.set_page_config(page_title="Pricing — Browser Demo", page_icon="💳", layout="centered")
+st.markdown('''
+<style>
+:root{ --wm-blue:#0071CE; --wm-yellow:#FFC220; --wm-dark:#004F9F; --wm-text:#1F2937; --wm-card:#FFFFFF; }
+.card { background: var(--wm-card); border: 1px solid #E5E7EB; border-radius: 16px; padding: 1.25rem 1.5rem; box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+.price { font-size: 2.0rem; font-weight: 700; color: var(--wm-blue); }
+.wm-btn button { background: var(--wm-blue) !important; color: #fff !important; border-radius: 10px !important; border: 0 !important; }
+.wm-btn button:hover { background: var(--wm-dark) !important; }
+.badge { display:inline-block; padding:.25rem .5rem; border-radius:.5rem; background: var(--wm-yellow); color:#111827; font-weight:600; }
+</style>
+''', unsafe_allow_html=True)
+st.title("Pricing")
+st.caption("Simple options. Walmart-inspired design. (Static browser demo)")
+plans = [
+    { "name": "7-Day Free Trial", "price": "$0", "period": "for 7 days",
+      "features": ["Track up to 50 SKUs","Daily refresh","CSV export","Email alerts (1 rule)"], "key": "trial" },
+    { "name": "7-Day Pass", "price": "$7.99", "period": "one-time",
+      "features": ["Track up to 150 SKUs","Daily refresh","CSV & Google Sheets export","Alerts (3 rules)"], "key": "weekly" },
+    { "name": "Monthly", "price": "$19", "period": "/month",
+      "features": ["Track up to 500 SKUs","2× daily refresh","Sheets/CSV export","Unlimited alerts","Competitor comparison & trends"], "key": "monthly" },
+    { "name": "Annual", "price": "$149", "period": "/year",
+      "features": ["Track up to 1,000 SKUs","4× daily refresh","All exports + webhooks","Priority support","12-month history"], "key": "annual", "badge": "Best Value" }
+]
+cols = st.columns(4, gap="large")
+for col, plan in zip(cols, plans):
+    with col:
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+        if "badge" in plan:
+            st.markdown(f"<div class='badge'>{plan['badge']}</div>", unsafe_allow_html=True)
+        st.subheader(plan["name"])
+        st.markdown(f"<div class='price'>{plan['price']} <span style='font-size:1rem; font-weight:500; color:#4B5563'>{plan['period']}</span></div>", unsafe_allow_html=True)
+        st.markdown("<hr/>", unsafe_allow_html=True)
+        for f in plan["features"]:
+            st.markdown(f"- {f}")
+        st.write("")
+        if st.button(f"Choose {plan['name']}", key=f"choose_{plan['key']}"):
+            st.session_state['selected_plan'] = plan['key']
+            st.success(f"Selected: {plan['name']}")
+        st.markdown("</div>", unsafe_allow_html=True)
+if 'selected_plan' in st.session_state:
+    chosen = next((p for p in plans if p['key'] == st.session_state['selected_plan']), None)
+    if chosen:
+        st.info(f"You selected **{chosen['name']}**. (Demo only — no billing here.)")
+        ` },
+        "pages/Competitors.py": { content: `
+import streamlit as st
+st.set_page_config(page_title="Competitor Comparison", page_icon="🆚", layout="wide")
+st.title("Competitor Comparison")
+st.caption("Side-by-side of sellers, prices, shipping, ratings, reviews, and badges.")
+st.info("Browser demo — connect real data in your server app.")
+        ` },
+        "pages/Trends.py": { content: `
+import streamlit as st
+st.set_page_config(page_title="Trends", page_icon="📈", layout="wide")
+st.title("Trends")
+st.caption("Price history, Buy Box trends, stockouts, and volatility scores.")
+st.info("Browser demo — add your charts and analytics in the server app.")
+        ` },
+        "pages/Alerts.py": { content: `
+import streamlit as st
+st.set_page_config(page_title="Alerts", page_icon="🔔", layout="wide")
+st.title("Alerts")
+st.caption("Create rules like price drop > 5%, lost Buy Box, or new competitor detected.")
+st.info("Browser demo — integrate scheduling in the server app.")
+        ` },
+        "pages/Exports.py": { content: `
+import streamlit as st
+st.set_page_config(page_title="Exports", page_icon="📤", layout="wide")
+st.title("Exports")
+st.caption("Export to CSV, Google Sheets, and schedule automated exports.")
+st.info("Browser demo — integrate exports and history storage in the server app.")
+        ` }
+      };
+      const loadingBox = document.getElementById("loadingBox");
+      function onProgress(p){ if(loadingBox){ loadingBox.textContent = "Downloading… " + Math.round(p*100) + "%"; if(p>=1) loadingBox.textContent="Initializing…"; } }
+      stlite.mount({ entrypoint: "streamlit_app.py", files, onProgress }, document.getElementById("app"))
+      .then(()=> loadingBox && loadingBox.remove())
+      .catch(e => { if(loadingBox) loadingBox.textContent = "Load failed: " + e; console.error(e); });
     </script>
-</body>
+  </body>
 </html>
